@@ -1,12 +1,21 @@
-node{
-  stage ('SCM Checkout') {
-    git 'https://github.com/Waliaajooni/frontend'
-  }
-  
-  stage ('Compile-Package') {
-    //get maven home path
-    
-    def mvnHome = tool name: 'maven-3', type: 'maven'
-    sh "${mvnHome}/bin/mvn package"
-  }
+pipeline {
+    agent any
+
+    stages {
+        stage('clone code') {
+            steps {
+                git branch: 'master', url: 'https://github.com/Waliaajooni/frontend.git'
+            }
+        }
+        stage('build code') {
+            steps {
+                sh "mvn clean install"
+            }
+        }
+	      
+        stage('Test') {
+            steps {
+                echo "testing application"
+            }
+        }
 }
